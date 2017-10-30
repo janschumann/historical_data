@@ -1,0 +1,41 @@
+---
+driver:
+  name: docker
+
+provisioner:
+  name: ansible_playbook
+  hosts: localhost
+  roles_path: ./roles
+  require_ansible_repo: false
+  require_ansible_omnibus: false
+  require_ansible_source: false
+  require_pip: true
+  ansible_version: 2.3.2.0
+  http_proxy: <%= ENV['HTTP_PROXY'] %>
+  https_proxy: <%= ENV['HTTPS_PROXY'] %>
+  no_proxy: localhost,127.0.0.1
+  ignore_extensions_from_root: [".git",".idea",".kitchen.yml"]
+  ignore_paths_from_root: [".git",".idea",".kitchen"]
+
+transport:
+  max_ssh_sessions: 6
+
+platforms:
+  - name: ubuntu-16.04
+    driver_config:
+      image: ubuntu:xenial
+      privileged: true
+      provision_command:
+        - apt-get update && apt-get install -y software-properties-common &&  add-apt-repository -y ppa:ansible/ansible
+        - apt-get install -y -q net-tools
+        - apt-get update && apt-get -y -q install python-apt python-pycurl python-pip
+        - pip install jmespath
+      use_sudo: false
+      run_command: "/sbin/init"
+
+suites:
+  - name: standard-5x
+    provisioner:
+      playbook: playbook.yml
+    run_list:
+    attributes:
