@@ -1,0 +1,25 @@
+---
+-
+  hosts: localhost
+  name: "Elasticsearch with custom configuration"
+  roles:
+    -
+      es_config:
+        bootstrap.memory_lock: true
+        cluster.name: custom-cluster
+        node.data: true
+        node.master: true
+        node.name: node1
+        network.host: 0.0.0.0
+        discovery.type: single-node
+      es_data_dirs: /opt/elasticsearch/data
+      es_instance_name: node1
+      es_log_dir: /opt/elasticsearch/logs
+      role: elasticsearch
+  vars:
+    es_version: "5.5.3"
+    es_api_port: 9200
+    es_heap_size: 1g
+    es_scripts: false
+    es_templates: false
+    es_version_lock: false

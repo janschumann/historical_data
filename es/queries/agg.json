@@ -1,0 +1,27 @@
+{
+    "size": 0,
+    "query": {
+        "bool": {
+          "must": [
+            { "match": { "field_name": "a_field_name" }},
+            { "match": { "user_id": %USER_ID% }}
+          ]
+        }
+    },
+	"aggs": {
+		"ecoscore_over_time": {
+			"date_histogram": {
+				"field": "date",
+				"interval": "day",
+                "format": "yyyy-MM-dd"
+			},
+			"aggs": {
+				"ecoscore_avg": {
+					"avg": {
+						"field": "value"
+					}
+				}
+			}
+		}
+	}
+}

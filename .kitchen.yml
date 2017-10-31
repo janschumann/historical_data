@@ -5,7 +5,7 @@ driver:
 provisioner:
   name: ansible_playbook
   hosts: localhost
-  roles_path: ./roles
+  roles_path: ./ansible/roles
   require_ansible_repo: false
   require_ansible_omnibus: false
   require_ansible_source: false
@@ -32,10 +32,12 @@ platforms:
         - pip install jmespath
       use_sudo: false
       run_command: "/sbin/init"
+      forward:
+          - 9200
 
 suites:
   - name: standard-5x
     provisioner:
-      playbook: playbook.yml
+      playbook: ansible/playbook.yml
     run_list:
     attributes:
