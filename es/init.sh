@@ -26,11 +26,9 @@ curl -X PUT "localhost:$PORT/historical_data?pretty" -H 'Content-Type: applicati
 echo
 echo "Inserting data ..."
 cd $BASE_DIR/es/data
-ID=0
 for f in $(ls *.json); do
-    ID=$(($ID + 1))
-    echo "Creating $ID from data/$f"
-    curl -X PUT "localhost:$PORT/historical_data/doc/$ID?pretty&pretty" -H 'Content-Type: application/json' -d @$f
+    echo "Creating data/$f"
+    curl -X POST "localhost:$PORT/historical_data/doc/?pretty&pretty" -H 'Content-Type: application/json' -d @$f
 done
 
 echo "Done."
